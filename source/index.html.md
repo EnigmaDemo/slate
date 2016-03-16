@@ -2,167 +2,208 @@
 title: API Reference
 
 language_tabs:
-  - shell
-  - ruby
   - python
 
 toc_footers:
-  - <a href='#'>Sign Up for a Developer Key</a>
-  - <a href='https://github.com/tripit/slate'>Documentation Powered by Slate</a>
+  - 
 
 includes:
-  - errors
+  - 
 
 search: true
+
 ---
 
 # Introduction
 
-Welcome to the Kittn API! You can use our API to access Kittn API endpoints, which can get information on various cats, kittens, and breeds in our database.
+Welcome to the Enigma API! 
 
-We have language bindings in Shell, Ruby, and Python! You can view code examples in the dark area to the right, and you can switch the programming language of the examples with the tabs in the top right.
+You can use this API to setup enigma nodes, securely store data, and perform operations on the encrypted data.
 
-This example API documentation page was created with [Slate](https://github.com/tripit/slate). Feel free to edit it and use it as a base for your own API's documentation.
+Enigma is currently available in Python. 
 
-# Authentication
+You will find code examples in the dark area to the right.
 
-> To authorize, use this code:
 
-```ruby
-require 'kittn'
+# Deployment
 
-api = Kittn::APIClient.authorize!('meowmeowmeow')
-```
+## Install Seed Node
+
+> To install enigma on the seed node, use this code:
 
 ```python
-import kittn
-
-api = kittn.authorize('meowmeowmeow')
+???
 ```
 
-```shell
-# With shell, you can just pass the correct header with each request
-curl "api_endpoint_here"
-  -H "Authorization: meowmeowmeow"
+The Linux server will be used as seed node (i.e. first node in the cloud). 
+
+Installation prerequisites:
+1. Server running Linux (there no specific hardware requirements)
+2. Have Docker installed, see <a href='https://docs.docker.com/engine/installation/linux/'>instructions here</a>
+
+To deply enigma on the server copy the engima docker image to a folder of your choice. In the terminal window go to that folder and run the docker image:
+
+`docker run enigma`
+
+## Add Node 
+
+> To add a new node use this code:
+
+```python
+node_added = enigma.node.add(10.255.16.8)
 ```
 
-> Make sure to replace `meowmeowmeow` with your API key.
+Adds a new node to the enigma cloud. 
 
-Kittn uses API keys to allow access to the API. You can register a new Kittn API key at our [developer portal](http://example.com/developers).
+`enigma.node.add(ip_address)`
 
-Kittn expects for the API key to be included in all API requests to the server in a header that looks like the following:
+**Returns:** `true` if node added succesfully, `false` otherwise
 
-`Authorization: meowmeowmeow`
+Parameter | Type | Description
+--------- | ------- | -----------
+ip_address | ip address | ip address of the seed node to connect to
 
 <aside class="notice">
-You must replace <code>meowmeowmeow</code> with your personal API key.
+Requires having first deployed enigma on a seed node. See instructions above on how to do this.  
 </aside>
 
-# Kittens
+# Access Control
 
-## Get All Kittens
+## Grant Access
 
-```ruby
-require 'kittn'
-
-api = Kittn::APIClient.authorize!('meowmeowmeow')
-api.kittens.get
-```
+> To grant access to data use this code:
 
 ```python
-import kittn
-
-api = kittn.authorize('meowmeowmeow')
-api.kittens.get()
+addresses = ['1DEP8i3QJCsomS4BSMY2RpU1upv62aGvhD', '1BvBMSEYstWetqTFn5Au4m4GFg7xJaNVN2', '3J98t1WpEZ73CNmQviecrnyiWrnqRhWNLy']
+transaction_id = enigma.pair(addresses) 
 ```
 
-```shell
-curl "http://example.com/api/kittens"
-  -H "Authorization: meowmeowmeow"
-```
+Grant access to data associated with a set of specified addresses. Addresss are compatible with bitcoin addresses.
 
-> The above command returns JSON structured like this:
+`enigma.pair(public_addresses)`
 
-```json
-[
-  {
-    "id": 1,
-    "name": "Fluffums",
-    "breed": "calico",
-    "fluffiness": 6,
-    "cuteness": 7
-  },
-  {
-    "id": 2,
-    "name": "Max",
-    "breed": "unknown",
-    "fluffiness": 5,
-    "cuteness": 10
-  }
-]
-```
+**Returns:** The `id` in the blockchain that has acceess control information, `false` if pairng is unsucessful
 
-This endpoint retrieves all kittens.
+### Pairing parameters
 
-### HTTP Request
-
-`GET http://example.com/api/kittens`
-
-### Query Parameters
-
-Parameter | Default | Description
+Parameter | Type | Description
 --------- | ------- | -----------
-include_cats | false | If set to true, the result will also include cats.
-available | true | If set to false, the result will include kittens that have already been adopted.
+public_addresses | list of strings | addresses referencing data to grant access to 
 
-<aside class="success">
-Remember — a happy kitten is an authenticated kitten!
-</aside>
 
-## Get a Specific Kitten
+## Revoke Access
 
-```ruby
-require 'kittn'
-
-api = Kittn::APIClient.authorize!('meowmeowmeow')
-api.kittens.get(2)
-```
+> To revoke access to data use this code:
 
 ```python
-import kittn
-
-api = kittn.authorize('meowmeowmeow')
-api.kittens.get(2)
+addresses = ['1DEP8i3QJCsomS4BSMY2RpU1upv62aGvhD', '1BvBMSEYstWetqTFn5Au4m4GFg7xJaNVN2', '3J98t1WpEZ73CNmQviecrnyiWrnqRhWNLy']
+revoke_successful = enigma.revoke(addresses) 
 ```
 
-```shell
-curl "http://example.com/api/kittens/2"
-  -H "Authorization: meowmeowmeow"
+Revokes data access associated to a set of specified addresses. 
+
+`enigma.revoke(public_addresses)`
+
+**Returns:** `true` if access successfully revoked, `false` otherwise
+
+### Revoke parameters
+
+Parameter | Type | Description
+--------- | ------- | -----------
+public_addresses | list of strings | addresses to cut acccess to
+
+
+# Data Management 
+
+## Store Data
+
+> To store data in the enigma cloud, use this code:
+
+```python
+data = [24.7, 115.19, 668.1, 12.3, 9.89, 245.4, 110.2, 3.58, 6.71, 2.35, 34.5, 330]
+key = enigma.store(data) 
 ```
 
-> The above command returns JSON structured like this:
+Securely stores data in the enigma cloud. 
 
-```json
-{
-  "id": 2,
-  "name": "Max",
-  "breed": "unknown",
-  "fluffiness": 5,
-  "cuteness": 10
-}
+`enigma.store(data)`
+
+**Returns:** `key` referencing the data, `error` if undable to store the data
+
+### Store parameters
+
+Parameter | Type | Description
+--------- | ------- | -----------
+data | list or array | data to securely store in enigma, data can be in any format 
+
+## Retreive Data
+
+> To retreive data from the enigma cloud, use this code:
+
+```python
+my_key = "3048024100C918FACF8DEB2DEFD5FD3789B9E069EA97FC205E35F577EE31C4FBC6E448117D86BC8FBAFA362F922BF01B2F400001"
+data = enigma.load(my_key)
 ```
 
-This endpoint retrieves a specific kitten.
+Extracts the data from the enigma cloud and reconstructs it in clear.
 
-<aside class="warning">Inside HTML code blocks like this one, you can't use Markdown, so use <code>&lt;code&gt;</code> blocks to denote code.</aside>
+`enigma.load(key)`
 
-### HTTP Request
+**Returns:** list of `data` if access is permitted, `error` otherwise
 
-`GET http://example.com/kittens/<ID>`
+### Load parameters
 
-### URL Parameters
+Parameter | Type | Description
+--------- | ----------- | -----------
+key | string | key used to access the data 
 
-Parameter | Description
---------- | -----------
-ID | The ID of the kitten to retrieve
+## Delete Data
+
+> To delete data from the enigma cloud, use this code:
+
+```python
+my_key = "3048024100C918FACF8DEB2DEFD5FD3789B9E069EA97FC205E35F577EE31C4FBC6E448117D86BC8FBAFA362F922BF01B2F400001"
+data_deleted = enigma.delete(my_key)
+```
+
+Deletes data from the engima cloud.
+
+`enigma.delete(key)`
+
+**Returns:** `true` if data sucessfully deleted, `false` otherwise
+
+### Delete parameters
+
+Parameter | Type | Description
+--------- | ----------- | -----------
+key | string | key used to access the data 
+
+
+# Data Processing 
+
+> To run operations on enigma, use this code:
+
+```python
+key = "3048024100C918FACF8DEB2DEFD5FD3789B9E069EA97FC205E35F577EE31C4FBC6E448117D86BC8FBAFA362F922BF01B2F400001"
+result = enigma.compute(mean, key)
+```
+
+Runs the operation defined by function for the list of specified keys.
+
+`enigma.compute(function_name, keys)`
+
+Supported functions: mean, standard_deviation, linear_regression
+
+**Returns:** `result` if computation successful, `error` otherwise
+
+<aside class="notice">
+Will only run if keys provided have authorized access (also assumes addresses associated to data still have access?)
+</aside>
+
+### Compute parameters
+
+Parameter | Type | Description
+--------- | ----------- | -----------
+function_name | enigma function | operation to run on the data, see list of possible functions above 
+keys | list of strings | keys that have access to the data 
 
