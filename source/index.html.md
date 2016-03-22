@@ -187,7 +187,7 @@ addresses = ['1DEP8i3QJCsomS4BSMY2RpU1upv62aGvhD',
 '1BvBMSEYstWetqTFn5Au4m4GFg7xJaNVN2', 
 '3J98t1WpEZ73CNmQviecrnyiWrnqRhWNLy']
 transaction_id = enigma.pair(addresses) 
-print(transaction_id)
+```
 
 
 Data owner grant access to a set of specified addresses.
@@ -209,8 +209,7 @@ addresses = ['1DEP8i3QJCsomS4BSMY2RpU1upv62aGvhD',
 '1BvBMSEYstWetqTFn5Au4m4GFg7xJaNVN2', 
 '3J98t1WpEZ73CNmQviecrnyiWrnqRhWNLy']
 transaction_id = enigma.revoke(addresses) 
-print(transaction_id)
->> // CLAIRE TO ADD
+
 ```
 
 Lets the data owner revoke access for a set of specified addresses. 
@@ -236,7 +235,7 @@ bob_key = enigma.store(bob_net_worth)
 max_value = enigma.stats.max(alice_key, bob_key)
 if max value == alice_key:
 	print 'Alice is richer'
-else:
+else if max value == bob_key:
 	print 'Bob is richer'
 ```
 
@@ -259,10 +258,10 @@ alice_net_worth = 10000000
 bob_net_worth = 30000
 alice_key = enigma.store(alice_net_worth)
 bob_key = enigma.store(bob_net_worth)
-max_value = enigma.stats.min(alice_key, bob_key)
-if max value == alice_key:
+min_value = enigma.stats.min(alice_key, bob_key)
+if min value == alice_key:
 	print 'Alice is poorer'
-else:
+else if in value == bob_key:
 	print 'Bob is poorer'
 ```
 
