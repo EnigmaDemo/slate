@@ -6,8 +6,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <title>API Reference</title>
 
-    <link href="stylesheets/screen.css" rel="stylesheet" media="screen" />
-    <link href="stylesheets/print.css" rel="stylesheet" media="print" />
     <style>
       .highlight table td { padding: 5px; }
 .highlight table pre { margin: 0; }
@@ -88,10 +86,12 @@
   color: #90a959;
 }
     </style>
+    <link href="stylesheets/screen.css" rel="stylesheet" media="screen" />
+    <link href="stylesheets/print.css" rel="stylesheet" media="print" />
       <script src="javascripts/all.js"></script>
   </head>
 
-  <body class="index" data-languages="[&quot;shell&quot;,&quot;ruby&quot;,&quot;python&quot;]">
+  <body class="index" data-languages="[&quot;python&quot;]">
     <a href="#" id="nav-button">
       <span>
         NAV
@@ -101,8 +101,6 @@
     <div class="tocify-wrapper">
       <img src="images/logo.png" />
         <div class="lang-selector">
-              <a href="#" data-language-name="shell">shell</a>
-              <a href="#" data-language-name="ruby">ruby</a>
               <a href="#" data-language-name="python">python</a>
         </div>
         <div class="search">
@@ -112,8 +110,7 @@
       <div id="toc">
       </div>
         <ul class="toc-footer">
-            <li><a href='#'>Sign Up for a Developer Key</a></li>
-            <li><a href='https://github.com/tripit/slate'>Documentation Powered by Slate</a></li>
+            <li></li>
         </ul>
     </div>
     <div class="page-wrapper">
@@ -121,225 +118,527 @@
       <div class="content">
         <h1 id="introduction">Introduction</h1>
 
-<p>Welcome to the Kittn API! You can use our API to access Kittn API endpoints, which can get information on various cats, kittens, and breeds in our database.</p>
+<p>Enigma is a distributed P2P cloud which allows storage and computation of data in encrypted form.</p>
 
-<p>We have language bindings in Shell, Ruby, and Python! You can view code examples in the dark area to the right, and you can switch the programming language of the examples with the tabs in the top right.</p>
+<p>This guide will help you intiate an enigma instance, securely store data, set access control policies and perform basic statistics and linear algebra operations on data. </p>
 
-<p>This example API documentation page was created with <a href="https://github.com/tripit/slate">Slate</a>. Feel free to edit it and use it as a base for your own API&rsquo;s documentation.</p>
+<h1 id="deployment">Deployment</h1>
 
-<h1 id="authentication">Authentication</h1>
+<p>Enigma nodes can be installed on Linux server using a docker image. First, set up an initial seed node. Additional nodes can join given the address of the seed node, propagation to the rest of the network happens automaticlly.</p>
 
-<blockquote>
-<p>To authorize, use this code:</p>
-</blockquote>
-<pre class="highlight ruby"><code><span class="nb">require</span> <span class="s1">'kittn'</span>
-
-<span class="n">api</span> <span class="o">=</span> <span class="no">Kittn</span><span class="o">::</span><span class="no">APIClient</span><span class="p">.</span><span class="nf">authorize!</span><span class="p">(</span><span class="s1">'meowmeowmeow'</span><span class="p">)</span>
-</code></pre>
-<pre class="highlight python"><code><span class="kn">import</span> <span class="nn">kittn</span>
-
-<span class="n">api</span> <span class="o">=</span> <span class="n">kittn</span><span class="o">.</span><span class="n">authorize</span><span class="p">(</span><span class="s">'meowmeowmeow'</span><span class="p">)</span>
-</code></pre>
-<pre class="highlight shell"><code><span class="c"># With shell, you can just pass the correct header with each request</span>
-curl <span class="s2">"api_endpoint_here"</span>
-  -H <span class="s2">"Authorization: meowmeowmeow"</span>
+<h2 id="start-seed-node">Start Seed Node</h2>
+<pre class="highlight python"><code><span class="n">docker</span> <span class="n">run</span> <span class="n">enigma</span> <span class="mi">6655</span>
 </code></pre>
 
-<blockquote>
-<p>Make sure to replace <code class="prettyprint">meowmeowmeow</code> with your API key.</p>
-</blockquote>
+<p>Creates a new enigma instance.</p>
 
-<p>Kittn uses API keys to allow access to the API. You can register a new Kittn API key at our <a href="http://example.com/developers">developer portal</a>.</p>
+<p><code class="prettyprint">docker run -seed enigma [port]</code></p>
 
-<p>Kittn expects for the API key to be included in all API requests to the server in a header that looks like the following:</p>
-
-<p><code class="prettyprint">Authorization: meowmeowmeow</code></p>
-
-<aside class="notice">
-You must replace <code>meowmeowmeow</code> with your personal API key.
-</aside>
-
-<h1 id="kittens">Kittens</h1>
-
-<h2 id="get-all-kittens">Get All Kittens</h2>
-<pre class="highlight ruby"><code><span class="nb">require</span> <span class="s1">'kittn'</span>
-
-<span class="n">api</span> <span class="o">=</span> <span class="no">Kittn</span><span class="o">::</span><span class="no">APIClient</span><span class="p">.</span><span class="nf">authorize!</span><span class="p">(</span><span class="s1">'meowmeowmeow'</span><span class="p">)</span>
-<span class="n">api</span><span class="p">.</span><span class="nf">kittens</span><span class="p">.</span><span class="nf">get</span>
-</code></pre>
-<pre class="highlight python"><code><span class="kn">import</span> <span class="nn">kittn</span>
-
-<span class="n">api</span> <span class="o">=</span> <span class="n">kittn</span><span class="o">.</span><span class="n">authorize</span><span class="p">(</span><span class="s">'meowmeowmeow'</span><span class="p">)</span>
-<span class="n">api</span><span class="o">.</span><span class="n">kittens</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
-</code></pre>
-<pre class="highlight shell"><code>curl <span class="s2">"http://example.com/api/kittens"</span>
-  -H <span class="s2">"Authorization: meowmeowmeow"</span>
-</code></pre>
-
-<blockquote>
-<p>The above command returns JSON structured like this:</p>
-</blockquote>
-<pre class="highlight json"><code><span class="p">[</span><span class="w">
-  </span><span class="p">{</span><span class="w">
-    </span><span class="nt">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
-    </span><span class="nt">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Fluffums"</span><span class="p">,</span><span class="w">
-    </span><span class="nt">"breed"</span><span class="p">:</span><span class="w"> </span><span class="s2">"calico"</span><span class="p">,</span><span class="w">
-    </span><span class="nt">"fluffiness"</span><span class="p">:</span><span class="w"> </span><span class="mi">6</span><span class="p">,</span><span class="w">
-    </span><span class="nt">"cuteness"</span><span class="p">:</span><span class="w"> </span><span class="mi">7</span><span class="w">
-  </span><span class="p">},</span><span class="w">
-  </span><span class="p">{</span><span class="w">
-    </span><span class="nt">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w">
-    </span><span class="nt">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Max"</span><span class="p">,</span><span class="w">
-    </span><span class="nt">"breed"</span><span class="p">:</span><span class="w"> </span><span class="s2">"unknown"</span><span class="p">,</span><span class="w">
-    </span><span class="nt">"fluffiness"</span><span class="p">:</span><span class="w"> </span><span class="mi">5</span><span class="p">,</span><span class="w">
-    </span><span class="nt">"cuteness"</span><span class="p">:</span><span class="w"> </span><span class="mi">10</span><span class="w">
-  </span><span class="p">}</span><span class="w">
-</span><span class="p">]</span><span class="w">
-</span></code></pre>
-
-<p>This endpoint retrieves all kittens.</p>
-
-<h3 id="http-request">HTTP Request</h3>
-
-<p><code class="prettyprint">GET http://example.com/api/kittens</code></p>
-
-<h3 id="query-parameters">Query Parameters</h3>
+<h3 id="start-parameters">Start parameters</h3>
 
 <table><thead>
 <tr>
 <th>Parameter</th>
-<th>Default</th>
+<th>Type</th>
 <th>Description</th>
 </tr>
 </thead><tbody>
 <tr>
-<td>include_cats</td>
-<td>false</td>
-<td>If set to true, the result will also include cats.</td>
-</tr>
-<tr>
-<td>available</td>
-<td>true</td>
-<td>If set to false, the result will include kittens that have already been adopted.</td>
+<td>port</td>
+<td>integer</td>
+<td>local port of node</td>
 </tr>
 </tbody></table>
 
-<aside class="success">
-Remember — a happy kitten is an authenticated kitten!
-</aside>
-
-<h2 id="get-a-specific-kitten">Get a Specific Kitten</h2>
-<pre class="highlight ruby"><code><span class="nb">require</span> <span class="s1">'kittn'</span>
-
-<span class="n">api</span> <span class="o">=</span> <span class="no">Kittn</span><span class="o">::</span><span class="no">APIClient</span><span class="p">.</span><span class="nf">authorize!</span><span class="p">(</span><span class="s1">'meowmeowmeow'</span><span class="p">)</span>
-<span class="n">api</span><span class="p">.</span><span class="nf">kittens</span><span class="p">.</span><span class="nf">get</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
-</code></pre>
-<pre class="highlight python"><code><span class="kn">import</span> <span class="nn">kittn</span>
-
-<span class="n">api</span> <span class="o">=</span> <span class="n">kittn</span><span class="o">.</span><span class="n">authorize</span><span class="p">(</span><span class="s">'meowmeowmeow'</span><span class="p">)</span>
-<span class="n">api</span><span class="o">.</span><span class="n">kittens</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
-</code></pre>
-<pre class="highlight shell"><code>curl <span class="s2">"http://example.com/api/kittens/2"</span>
-  -H <span class="s2">"Authorization: meowmeowmeow"</span>
+<h2 id="add-node">Add Node</h2>
+<pre class="highlight python"><code><span class="n">docker</span> <span class="n">run</span> <span class="n">enigma</span> <span class="mf">24.133</span><span class="o">.</span><span class="mf">12.31</span> <span class="mi">6655</span>
 </code></pre>
 
-<blockquote>
-<p>The above command returns JSON structured like this:</p>
-</blockquote>
-<pre class="highlight json"><code><span class="p">{</span><span class="w">
-  </span><span class="nt">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w">
-  </span><span class="nt">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Max"</span><span class="p">,</span><span class="w">
-  </span><span class="nt">"breed"</span><span class="p">:</span><span class="w"> </span><span class="s2">"unknown"</span><span class="p">,</span><span class="w">
-  </span><span class="nt">"fluffiness"</span><span class="p">:</span><span class="w"> </span><span class="mi">5</span><span class="p">,</span><span class="w">
-  </span><span class="nt">"cuteness"</span><span class="p">:</span><span class="w"> </span><span class="mi">10</span><span class="w">
-</span><span class="p">}</span><span class="w">
-</span></code></pre>
+<p>Starts new node to connect to current Enigma instance.</p>
 
-<p>This endpoint retrieves a specific kitten.</p>
+<p><code class="prettyprint">docker run enigma [ip] [port]</code></p>
 
-<aside class="warning">Inside HTML code blocks like this one, you can&rsquo;t use Markdown, so use <code>&lt;code&gt;</code> blocks to denote code.</aside>
-
-<h3 id="http-request">HTTP Request</h3>
-
-<p><code class="prettyprint">GET http://example.com/kittens/&lt;ID&gt;</code></p>
-
-<h3 id="url-parameters">URL Parameters</h3>
+<h3 id="start-parameters">Start parameters</h3>
 
 <table><thead>
 <tr>
 <th>Parameter</th>
+<th>Type</th>
 <th>Description</th>
 </tr>
 </thead><tbody>
 <tr>
-<td>ID</td>
-<td>The ID of the kitten to retrieve</td>
+<td>ip</td>
+<td>integer</td>
+<td>ip of seed node</td>
+</tr>
+<tr>
+<td>port</td>
+<td>integer</td>
+<td>port of seed node</td>
 </tr>
 </tbody></table>
 
-          <h1 id="errors">Errors</h1>
+<h1 id="rpc-interface">RPC Interface</h1>
 
-<aside class="notice">This error section is stored in a separate file in `includes/_errors.md`. Slate allows you to optionally separate out your docs into many files&hellip;just save them to the `includes` folder and add them to the top of your `index.md`&rsquo;s frontmatter. Files are included in the order listed.</aside>
+<h2 id="connect-to-rpc-server">Connect to RPC Server</h2>
+<pre class="highlight python"><code><span class="kn">from</span> <span class="nn">enigma</span> <span class="kn">import</span> <span class="n">Client</span>
+<span class="n">client</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="mf">127.0</span><span class="o">.</span><span class="mf">0.1</span><span class="p">,</span> <span class="mi">6655</span><span class="p">)</span> 
+</code></pre>
 
-<p>The Kittn API uses the following error codes:</p>
+<p><code class="prettyprint">client.connect(ip, port)</code></p>
+
+<h3 id="start-parameters">Start parameters</h3>
 
 <table><thead>
 <tr>
-<th>Error Code</th>
-<th>Meaning</th>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
 </tr>
 </thead><tbody>
 <tr>
-<td>400</td>
-<td>Bad Request &ndash; Your request sucks</td>
+<td>ip</td>
+<td>integer</td>
+<td>ip of rpc</td>
 </tr>
 <tr>
-<td>401</td>
-<td>Unauthorized &ndash; Your API key is wrong</td>
-</tr>
-<tr>
-<td>403</td>
-<td>Forbidden &ndash; The kitten requested is hidden for administrators only</td>
-</tr>
-<tr>
-<td>404</td>
-<td>Not Found &ndash; The specified kitten could not be found</td>
-</tr>
-<tr>
-<td>405</td>
-<td>Method Not Allowed &ndash; You tried to access a kitten with an invalid method</td>
-</tr>
-<tr>
-<td>406</td>
-<td>Not Acceptable &ndash; You requested a format that isn&rsquo;t json</td>
-</tr>
-<tr>
-<td>410</td>
-<td>Gone &ndash; The kitten requested has been removed from our servers</td>
-</tr>
-<tr>
-<td>418</td>
-<td>I&rsquo;m a teapot</td>
-</tr>
-<tr>
-<td>429</td>
-<td>Too Many Requests &ndash; You&rsquo;re requesting too many kittens! Slow down!</td>
-</tr>
-<tr>
-<td>500</td>
-<td>Internal Server Error &ndash; We had a problem with our server. Try again later.</td>
-</tr>
-<tr>
-<td>503</td>
-<td>Service Unavailable &ndash; We&rsquo;re temporarially offline for maintanance. Please try again later.</td>
+<td>port</td>
+<td>integer</td>
+<td>port of rpc</td>
 </tr>
 </tbody></table>
 
+<h1 id="key-management">Key Management</h1>
+
+<p>Each node on the network has an identity represenented by a private/public key pair. The range of valid private keys is governed by the secp256k1 ECDSA standard used by Bitcoin.</p>
+
+<h2 id="generate-key">Generate Key</h2>
+<pre class="highlight python"><code><span class="n">private_key</span><span class="p">,</span> <span class="n">public_key</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">gen_key</span><span class="p">()</span>
+</code></pre>
+
+<p>Generates a private/public key pair and sets them for the local node.</p>
+
+<p><code class="prettyprint">client.gen_keys()</code></p>
+
+<p><strong>Returns:</strong> 
+ <em>string</em> a &lsquo;private_key&rsquo;, <em>string</em> the corresponding <code class="prettyprint">public_key</code></p>
+
+<h2 id="get-public-key">Get Public Key</h2>
+<pre class="highlight python"><code><span class="n">public_key</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">get_pubkey</span><span class="p">()</span>
+</code></pre>
+
+<p>Gets the public key corresponding to the currently set private key.</p>
+
+<p><code class="prettyprint">client.get_pubkey()</code></p>
+
+<p><strong>Returns:</strong> <em>string</em> the <code class="prettyprint">public_key</code>.</p>
+
+<h2 id="set-key">Set Key</h2>
+<pre class="highlight python"><code><span class="n">client</span><span class="o">.</span><span class="n">set_privkey</span><span class="p">(</span><span class="n">privkey</span><span class="p">)</span>
+</code></pre>
+
+<p>Sets the current identity to a specified private key</p>
+
+<p><code class="prettyprint">client.set_privkey(privkey)</code></p>
+
+<p><strong>Returns:</strong> <em>boolean</em> <code class="prettyprint">true</code> if successful, <code class="prettyprint">false</code> otherwise.</p>
+
+<h3 id="set-private-key-parameters">Set private key parameters</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>privkey</td>
+<td>string</td>
+<td>private key associated to the data stored in enigma</td>
+</tr>
+</tbody></table>
+
+<h1 id="data-management">Data Management</h1>
+
+<p>Enigma uses Shamir&rsquo;s Secret Sharing Scheme for splitting data into encrypted pieces. Different nodes in the network recieve different pieces, and therefore cannot decrypt the data. The encryption and storage are all done in the background. The key associated with the data is the sha256 hash of it.</p>
+
+<h2 id="store-data">Store Data</h2>
+<pre class="highlight python"><code><span class="o">//</span> <span class="n">model</span> <span class="n">age</span>
+<span class="n">age</span> <span class="o">=</span> <span class="mi">24</span>
+<span class="n">key_age</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">store</span><span class="p">(</span><span class="n">age</span><span class="p">)</span> 
+
+<span class="o">//</span> <span class="n">model</span> <span class="n">hip</span><span class="p">,</span> <span class="n">waist</span><span class="p">,</span> <span class="ow">and</span> <span class="n">bust</span> <span class="n">dimensions</span><span class="p">,</span> <span class="n">month</span> <span class="n">over</span> <span class="n">month</span>
+<span class="n">body</span> <span class="o">=</span> <span class="p">[[</span><span class="mi">90</span><span class="p">,</span><span class="mi">60</span><span class="p">,</span><span class="mi">90</span><span class="p">][</span><span class="mi">88</span><span class="p">,</span><span class="mi">57</span><span class="p">,</span><span class="mi">89</span><span class="p">][</span><span class="mi">92</span><span class="p">,</span><span class="mi">64</span><span class="p">,</span><span class="mi">91</span><span class="p">]]</span>
+<span class="n">key_body</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">store</span><span class="p">(</span><span class="n">body</span><span class="p">)</span> 
+</code></pre>
+
+<p>Securely stores data in the enigma cloud. </p>
+
+<p><code class="prettyprint">client.store(data)</code></p>
+
+<p><strong>Returns:</strong> <em>string</em> <code class="prettyprint">key</code> referencing the data, <code class="prettyprint">error</code> if undable to store the data.</p>
+
+<h3 id="store-parameters">Store parameters</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>data</td>
+<td>array[]</td>
+<td>data to securely store in enigma, data can be in any format</td>
+</tr>
+</tbody></table>
+
+<h2 id="retreive-data">Retreive Data</h2>
+<pre class="highlight python"><code><span class="n">my_key</span> <span class="o">=</span> <span class="s">"c2356069e9d1e79ca924378153cfbbfb4d4416b1f99d41a2940bfdb66c5319db"</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">my_key</span><span class="p">)</span>
+</code></pre>
+
+<p>Extracts the data from the client cloud and reconstructs it in clear.</p>
+
+<p><code class="prettyprint">client.load(key)</code></p>
+
+<p><strong>Returns:</strong> <em>array</em> list with the data <code class="prettyprint">data</code>, <code class="prettyprint">error</code> otherwise.</p>
+
+<h3 id="load-parameters">Load parameters</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>key</td>
+<td>string</td>
+<td>key pointing to data</td>
+</tr>
+</tbody></table>
+
+<h2 id="delete-data">Delete Data</h2>
+<pre class="highlight python"><code><span class="n">key</span> <span class="o">=</span> <span class="s">"c2356069e9d1e79ca924378153cfbbfb4d4416b1f99d41a2940bfdb66c5319db"</span>
+<span class="n">client</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+</code></pre>
+
+<p>Deletes data from the engima cloud.</p>
+
+<p><code class="prettyprint">client.delete(key)</code></p>
+
+<p><strong>Returns:</strong> <em>boolean</em> <code class="prettyprint">true</code> if data sucessfully deleted, <code class="prettyprint">false</code> otherwise.</p>
+
+<h3 id="delete-parameters">Delete parameters</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>key</td>
+<td>string</td>
+<td>key pointing to data</td>
+</tr>
+</tbody></table>
+
+<h1 id="access-control">Access Control</h1>
+
+<p>Access control is managed on the bitcoin blockchain. Access policies for each identity are repsesented by a blockchain transaction, intitiatied by the data owner. For more information, see <a href = 'http://web.media.mit.edu/~guyzys/data/ZNP15.pdf'> Decentralizing Privacy: Using Blockchain to Protect
+Personal Data </a></p>
+
+<h2 id="grant-access">Grant Access</h2>
+<pre class="highlight python"><code><span class="n">addresses</span> <span class="o">=</span> <span class="p">[</span><span class="s">'1DEP8i3QJCsomS4BSMY2RpU1upv62aGvhD'</span><span class="p">,</span> 
+<span class="s">'1BvBMSEYstWetqTFn5Au4m4GFg7xJaNVN2'</span><span class="p">,</span> 
+<span class="s">'3J98t1WpEZ73CNmQviecrnyiWrnqRhWNLy'</span><span class="p">]</span>
+<span class="n">transaction_id</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">pair</span><span class="p">(</span><span class="n">addresses</span><span class="p">)</span> 
+</code></pre>
+
+<p>Data owner grant access to a set of specified addresses.</p>
+
+<p><code class="prettyprint">client.pair(public_addresses)</code></p>
+
+<p><strong>Returns:</strong> <em>string</em> <code class="prettyprint">transaction_id</code> of user access control policy, <code class="prettyprint">error</code> otherwise.</p>
+
+<h3 id="pairing-parameters">Pairing parameters</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>public_addresses</td>
+<td>array[string]</td>
+<td>addresses to grant access</td>
+</tr>
+</tbody></table>
+
+<h2 id="revoke-access">Revoke Access</h2>
+<pre class="highlight python"><code><span class="n">addresses</span> <span class="o">=</span> <span class="p">[</span><span class="s">'1DEP8i3QJCsomS4BSMY2RpU1upv62aGvhD'</span><span class="p">,</span> 
+<span class="s">'1BvBMSEYstWetqTFn5Au4m4GFg7xJaNVN2'</span><span class="p">,</span> 
+<span class="s">'3J98t1WpEZ73CNmQviecrnyiWrnqRhWNLy'</span><span class="p">]</span>
+<span class="n">transaction_id</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">revoke</span><span class="p">(</span><span class="n">addresses</span><span class="p">)</span> 
+
+</code></pre>
+
+<p>Lets the data owner revoke access for a set of specified addresses. </p>
+
+<p><code class="prettyprint">client.revoke(public_addresses)</code></p>
+
+<p><strong>Returns:</strong> <em>string</em> <code class="prettyprint">transaction_id</code> of user access control policy, <code class="prettyprint">error</code> otherwise.</p>
+
+<h3 id="unpair-parameters">Unpair parameters</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>public_addresses</td>
+<td>array[string]</td>
+<td>addresses to remove access</td>
+</tr>
+</tbody></table>
+
+<h1 id="data-processing">Data Processing</h1>
+
+<h2 id="max">Max</h2>
+<pre class="highlight python"><code><span class="n">alice_net_worth</span> <span class="o">=</span> <span class="mi">10000000</span>
+<span class="n">bob_net_worth</span> <span class="o">=</span> <span class="mi">30000</span>
+<span class="n">alice_key</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">store</span><span class="p">(</span><span class="n">alice_net_worth</span><span class="p">)</span>
+<span class="n">bob_key</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">store</span><span class="p">(</span><span class="n">bob_net_worth</span><span class="p">)</span>
+<span class="n">max_value</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="nb">max</span><span class="p">(</span><span class="n">alice_key</span><span class="p">,</span> <span class="n">bob_key</span><span class="p">)</span>
+<span class="k">if</span> <span class="nb">max</span> <span class="n">value</span> <span class="o">==</span> <span class="n">alice_key</span><span class="p">:</span>
+    <span class="k">print</span> <span class="s">'Alice is richer'</span>
+<span class="k">else</span> <span class="k">if</span> <span class="nb">max</span> <span class="n">value</span> <span class="o">==</span> <span class="n">bob_key</span><span class="p">:</span>
+    <span class="k">print</span> <span class="s">'Bob is richer'</span>
+</code></pre>
+
+<p>Finds the max value of a data set.</p>
+
+<p><code class="prettyprint">client.stats.max(keys)</code></p>
+
+<p><strong>Returns:</strong> array of <em>string</em> keys pointing to the max value.</p>
+
+<h3 id="min-parameters">Min parameters</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>keys</td>
+<td>array[string]</td>
+<td>keys that point to data</td>
+</tr>
+</tbody></table>
+
+<h2 id="min">Min</h2>
+<pre class="highlight python"><code><span class="n">alice_net_worth</span> <span class="o">=</span> <span class="mi">10000000</span>
+<span class="n">bob_net_worth</span> <span class="o">=</span> <span class="mi">30000</span>
+<span class="n">alice_key</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">store</span><span class="p">(</span><span class="n">alice_net_worth</span><span class="p">)</span>
+<span class="n">bob_key</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">store</span><span class="p">(</span><span class="n">bob_net_worth</span><span class="p">)</span>
+<span class="n">min_value</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="nb">min</span><span class="p">(</span><span class="n">alice_key</span><span class="p">,</span> <span class="n">bob_key</span><span class="p">)</span>
+<span class="k">if</span> <span class="nb">min</span> <span class="n">value</span> <span class="o">==</span> <span class="n">alice_key</span><span class="p">:</span>
+    <span class="k">print</span> <span class="s">'Alice is poorer'</span>
+<span class="k">else</span> <span class="k">if</span> <span class="ow">in</span> <span class="n">value</span> <span class="o">==</span> <span class="n">bob_key</span><span class="p">:</span>
+    <span class="k">print</span> <span class="s">'Bob is poorer'</span>
+</code></pre>
+
+<p>Finds the min value in a data set.</p>
+
+<p><code class="prettyprint">client.stats.min(keys)</code></p>
+
+<p><strong>Returns:</strong> array of <em>string</em> key pointing to the min value.</p>
+
+<h3 id="min-parameters">Min parameters</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>keys</td>
+<td>array[string]</td>
+<td>keys pointing to data</td>
+</tr>
+</tbody></table>
+
+<h2 id="mean">Mean</h2>
+<pre class="highlight python"><code><span class="n">ages_of_customers</span> <span class="o">=</span> <span class="p">[</span><span class="mi">45</span><span class="p">,</span><span class="mi">43</span><span class="p">,</span><span class="mi">23</span><span class="p">,</span><span class="mi">15</span><span class="p">,</span><span class="mi">67</span><span class="p">,</span><span class="mi">32</span><span class="p">,</span><span class="mi">28</span><span class="p">,</span><span class="mi">98</span><span class="p">,</span><span class="mi">55</span><span class="p">,</span><span class="mi">14</span><span class="p">]</span>
+<span class="n">key</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">store</span><span class="p">(</span><span class="n">ages_of_customers</span><span class="p">)</span>
+<span class="n">mean</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+</code></pre>
+
+<p>Computes the mean of a given data set.</p>
+
+<p><code class="prettyprint">engima.stats.mean(keys)</code></p>
+
+<p><strong>Returns:</strong> <em>array</em> a new array containing the mean value. </p>
+
+<h3 id="mean-parameters">Mean parameters</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>keys</td>
+<td>array[string]</td>
+<td>keys pointing to data</td>
+</tr>
+</tbody></table>
+
+<h2 id="standard-deviation">Standard deviation</h2>
+<pre class="highlight python"><code><span class="n">ages_of_customers</span> <span class="o">=</span> <span class="p">[</span><span class="mi">45</span><span class="p">,</span><span class="mi">43</span><span class="p">,</span><span class="mi">23</span><span class="p">,</span><span class="mi">15</span><span class="p">,</span><span class="mi">67</span><span class="p">,</span><span class="mi">32</span><span class="p">,</span><span class="mi">28</span><span class="p">,</span><span class="mi">98</span><span class="p">,</span><span class="mi">55</span><span class="p">,</span><span class="mi">14</span><span class="p">]</span>
+<span class="n">key</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">store</span><span class="p">(</span><span class="n">ages_of_customers</span><span class="p">)</span>
+<span class="n">standard_dev</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+</code></pre>
+
+<p>Computes the standard deviation over a given data set. </p>
+
+<p><code class="prettyprint">client.stats.std(keys)</code></p>
+
+<p><strong>Returns:</strong> <em>array</em> a new array containing the standard deviation.</p>
+
+<h3 id="standard-deviation-parameters">Standard deviation parameters</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>keys</td>
+<td>array[string]</td>
+<td>keys pointing to data</td>
+</tr>
+</tbody></table>
+
+<h2 id="variance">Variance</h2>
+<pre class="highlight python"><code><span class="n">ages_of_customers</span> <span class="o">=</span> <span class="p">[</span><span class="mi">45</span><span class="p">,</span><span class="mi">43</span><span class="p">,</span><span class="mi">23</span><span class="p">,</span><span class="mi">15</span><span class="p">,</span><span class="mi">67</span><span class="p">,</span><span class="mi">32</span><span class="p">,</span><span class="mi">28</span><span class="p">,</span><span class="mi">98</span><span class="p">,</span><span class="mi">55</span><span class="p">,</span><span class="mi">14</span><span class="p">]</span>
+<span class="n">key</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">store</span><span class="p">(</span><span class="n">ages_of_customers</span><span class="p">)</span>
+<span class="n">variance</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">var</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+</code></pre>
+
+<p>Computes the variance over a given data set. The variance is computed for the flattened array.</p>
+
+<p><code class="prettyprint">client.stats.var(keys)</code></p>
+
+<p><strong>Returns:</strong> <em>array</em> a new array containing the variance.</p>
+
+<h3 id="variance-parameters">Variance parameters</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>keys</td>
+<td>array[string]</td>
+<td>keys pointing to data</td>
+</tr>
+</tbody></table>
+
+<h2 id="linear-regression">Linear regression</h2>
+<pre class="highlight python"><code><span class="n">key_a</span> <span class="o">=</span> <span class="s">"10bb65d718d7cc446d2d155ed9ccb2812a82c3c447e8333d5aebfed541874c44"</span>
+<span class="n">key_b</span> <span class="o">=</span> <span class="s">"34eb5849b302e887bc41e516e9bd46c8629af2943c4da4aa94e4d2877fc16b81"</span>
+<span class="n">key_c</span> <span class="o">=</span> <span class="s">"37eb5849b302e887bc41e516e9bd46c8629af2943c4da4aa943hd2877fc16b81"</span>
+<span class="n">slope</span><span class="p">,</span> <span class="n">intercept</span><span class="p">,</span> <span class="n">r_value</span><span class="p">,</span> <span class="n">p_value</span><span class="p">,</span> <span class="n">std_err</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">linregress</span><span class="p">(</span><span class="n">key_a</span><span class="p">,</span> <span class="n">key_b</span><span class="p">,</span> <span class="n">key_c</span><span class="p">)</span>
+</code></pre>
+
+<p>Computes the linear regression for a given data set using ordinary least squares method.</p>
+
+<p><code class="prettyprint">client.stats.linregress(*args)</code></p>
+
+<p><strong>Returns:</strong> 
+* <code class="prettyprint">slope</code>: <em>float</em> slope of the regression line 
+* <code class="prettyprint">intercept</code> <em>float</em> intercept of the regresion line 
+* <code class="prettyprint">r:value</code>: <em>float</em> correlation coefficient
+* <code class="prettyprint">p_value</code>: <em>float</em> two-sided p-value for a hypothesis test whose null hypothesis is that the slope is zero
+* <code class="prettyprint">stderr</code>: <em>float</em> standard error of the estimate</p>
+
+<h3 id="linear-regressions-parameters">Linear regressions parameters</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>key</td>
+<td>string</td>
+<td>key that points to the first s</td>
+</tr>
+</tbody></table>
+
+<h2 id="multiply-matrices">Multiply matrices</h2>
+<pre class="highlight python"><code><span class="n">key_a</span> <span class="o">=</span> <span class="s">"10bb65d718d7cc446d2d155ed9ccb2812a82c3c447e8333d5aebfed541874c44"</span>
+<span class="n">key_b</span> <span class="o">=</span> <span class="s">"34eb5849b302e887bc41e516e9bd46c8629af2943c4da4aa94e4d2877fc16b81"</span>
+<span class="n">prod</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">key_a</span><span class="p">,</span> <span class="n">key_b</span><span class="p">)</span>
+</code></pre>
+
+<p>Computes the dot product of two arrays. For 2-D arrays it is equivalent to matrix multiplication, and for 1-D arrays to inner product of vectors (without complex conjugation). For N dimensions it is a sum product over the last axis of a and the second-to-last of b.</p>
+
+<p><code class="prettyprint">client.linalg.dot()</code></p>
+
+<p><strong>Returns:</strong> <em>array</em> the dot product of a and b, if a and b are both scalars or both 1-D arrays then a scalar is returned; otherwise an array is returned.</p>
+
+<h3 id="multiply-parameters">Multiply parameters</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>key_a</td>
+<td>string</td>
+<td>key that points to the first array</td>
+</tr>
+<tr>
+<td>key_b</td>
+<td>string</td>
+<td>key that points to the second array</td>
+</tr>
+</tbody></table>
+
+          
       </div>
       <div class="dark-box">
           <div class="lang-selector">
-                <a href="#" data-language-name="shell">shell</a>
-                <a href="#" data-language-name="ruby">ruby</a>
                 <a href="#" data-language-name="python">python</a>
           </div>
       </div>
