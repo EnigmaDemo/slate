@@ -46,7 +46,7 @@ port | integer | local port of node
 docker run enigma 24.133.12.31 6655
 ```
 
-Starts new node to connect to current Enigma instance.
+Starts new node, connecting to already deployed Enigma instance.
 
 `docker run enigma [ip] [port]`
 
@@ -62,10 +62,10 @@ port | integer | port of seed node
 
 ```python
 from enigma import Client
-client = client.connect(127.0.0.1, 6655) 
+client = Client.connect(127.0.0.1, 6655) 
 ```
 
-`client.connect(ip, port)`
+`Client.connect(ip, port)`
 
 ### Start parameters
 Parameter | Type | Description
@@ -156,7 +156,7 @@ my_key = "c2356069e9d1e79ca924378153cfbbfb4d4416b1f99d41a2940bfdb66c5319db"
 data = client.load(my_key)
 ```
 
-Extracts the data from the client cloud and reconstructs it in clear.
+Extracts the data from the client cloud and reconstructs it in clear. Can only be done by data owner.
 
 `client.load(key)`
 
@@ -176,7 +176,7 @@ key = "c2356069e9d1e79ca924378153cfbbfb4d4416b1f99d41a2940bfdb66c5319db"
 client.delete(key)
 ```
 
-Deletes data from the engima cloud.
+Deletes data from the enigma cloud.
 
 `client.delete(key)`
 
