@@ -56,6 +56,22 @@ Parameter | Type | Description
 ip | integer | ip of seed node
 port | integer | port of seed node
 
+# RPC Interface
+
+## Connect to RPC Server
+
+```python
+from enigma import Client
+client = client.connect(127.0.0.1, 6655) 
+```
+
+`client.connect(ip, port)`
+
+### Start parameters
+Parameter | Type | Description
+--------- | ------- | -----------
+ip | integer | ip of rpc
+port | integer | port of rpc
 
 # Key Management 
 
@@ -64,12 +80,12 @@ Each node on the network has an identity represenented by a private/public key p
 ## Generate Key
 
 ```python
-private_key, public_key = enigma.gen_key()
+private_key, public_key = client.gen_key()
 ```
 
 Generates a private/public key pair and sets them for the local node.
 
-`enigma.gen_keys()`
+`client.gen_keys()`
 
 **Returns:** 
  *string* a 'private_key', *string* the corresponding `public_key`
@@ -78,11 +94,11 @@ Generates a private/public key pair and sets them for the local node.
 ## Get Public Key
 
 ```python
-public_key = enigma.get_pubkey()
+public_key = client.get_pubkey()
 ```
 Gets the public key corresponding to the currently set private key.
 
-`enigma.get_pubkey()`
+`client.get_pubkey()`
 
 **Returns:** *string* the `public_key`.
 
@@ -91,11 +107,11 @@ Gets the public key corresponding to the currently set private key.
 
 
 ```python
-enigma.set_privkey(privkey)
+client.set_privkey(privkey)
 ```
 Sets the current identity to a specified private key
 
-`enigma.set_privkey(privkey)`
+`client.set_privkey(privkey)`
 
 **Returns:** *boolean* `true` if successful, `false` otherwise.
 
@@ -114,16 +130,16 @@ Enigma uses Shamir's Secret Sharing Scheme for splitting data into encrypted pie
 ```python
 // model age
 age = 24
-key_age = enigma.store(age) 
+key_age = client.store(age) 
 
 // model hip, waist, and bust dimensions, month over month
 body = [[90,60,90][88,57,89][92,64,91]]
-key_body = enigma.store(body) 
+key_body = client.store(body) 
 ```
 
 Securely stores data in the enigma cloud. 
 
-`enigma.store(data)`
+`client.store(data)`
 
 **Returns:** *string* `key` referencing the data, `error` if undable to store the data.
 
@@ -137,12 +153,12 @@ data | array[] | data to securely store in enigma, data can be in any format
 
 ```python
 my_key = "c2356069e9d1e79ca924378153cfbbfb4d4416b1f99d41a2940bfdb66c5319db"
-data = enigma.load(my_key)
+data = client.load(my_key)
 ```
 
-Extracts the data from the enigma cloud and reconstructs it in clear.
+Extracts the data from the client cloud and reconstructs it in clear.
 
-`enigma.load(key)`
+`client.load(key)`
 
 **Returns:** *array* list with the data `data`, `error` otherwise.
 
@@ -157,12 +173,12 @@ key | string | key pointing to data
 
 ```python
 key = "c2356069e9d1e79ca924378153cfbbfb4d4416b1f99d41a2940bfdb66c5319db"
-enigma.delete(key)
+client.delete(key)
 ```
 
 Deletes data from the engima cloud.
 
-`enigma.delete(key)`
+`client.delete(key)`
 
 **Returns:** *boolean* `true` if data sucessfully deleted, `false` otherwise.
 
@@ -186,13 +202,13 @@ Personal Data </a>
 addresses = ['1DEP8i3QJCsomS4BSMY2RpU1upv62aGvhD', 
 '1BvBMSEYstWetqTFn5Au4m4GFg7xJaNVN2', 
 '3J98t1WpEZ73CNmQviecrnyiWrnqRhWNLy']
-transaction_id = enigma.pair(addresses) 
+transaction_id = client.pair(addresses) 
 ```
 
 
 Data owner grant access to a set of specified addresses.
 
-`enigma.pair(public_addresses)`
+`client.pair(public_addresses)`
 
 **Returns:** *string* `transaction_id` of user access control policy, `error` otherwise.
 
@@ -208,13 +224,13 @@ public_addresses | array[string] | addresses to grant access
 addresses = ['1DEP8i3QJCsomS4BSMY2RpU1upv62aGvhD', 
 '1BvBMSEYstWetqTFn5Au4m4GFg7xJaNVN2', 
 '3J98t1WpEZ73CNmQviecrnyiWrnqRhWNLy']
-transaction_id = enigma.revoke(addresses) 
+transaction_id = client.revoke(addresses) 
 
 ```
 
 Lets the data owner revoke access for a set of specified addresses. 
 
-`enigma.revoke(public_addresses)`
+`client.revoke(public_addresses)`
 
 **Returns:** *string* `transaction_id` of user access control policy, `error` otherwise.
 
@@ -230,9 +246,9 @@ public_addresses | array[string] | addresses to remove access
 ```python
 alice_net_worth = 10000000
 bob_net_worth = 30000
-alice_key = enigma.store(alice_net_worth)
-bob_key = enigma.store(bob_net_worth)
-max_value = enigma.stats.max(alice_key, bob_key)
+alice_key = client.store(alice_net_worth)
+bob_key = client.store(bob_net_worth)
+max_value = client.stats.max(alice_key, bob_key)
 if max value == alice_key:
 	print 'Alice is richer'
 else if max value == bob_key:
@@ -241,9 +257,9 @@ else if max value == bob_key:
 
 Finds the max value of a data set.
 
-`enigma.stats.max(keys)`
+`client.stats.max(keys)`
 
-**Returns:** *string* key pointing to the max value.
+**Returns:** array of *string* keys pointing to the max value.
 
 ### Min parameters
 Parameter | Type | Description
@@ -256,9 +272,9 @@ keys | array[string] | keys that point to data
 ```python
 alice_net_worth = 10000000
 bob_net_worth = 30000
-alice_key = enigma.store(alice_net_worth)
-bob_key = enigma.store(bob_net_worth)
-min_value = enigma.stats.min(alice_key, bob_key)
+alice_key = client.store(alice_net_worth)
+bob_key = client.store(bob_net_worth)
+min_value = client.stats.min(alice_key, bob_key)
 if min value == alice_key:
 	print 'Alice is poorer'
 else if in value == bob_key:
@@ -267,9 +283,9 @@ else if in value == bob_key:
 
 Finds the min value in a data set.
 
-`enigma.stats.min(keys)`
+`client.stats.min(keys)`
 
-**Returns:** *string* key pointing to the min value.
+**Returns:** array of *string* key pointing to the min value.
 
 ### Min parameters
 Parameter | Type | Description
@@ -281,13 +297,13 @@ keys | array[string] | keys pointing to data
 
 ```python
 ages_of_customers = [45,43,23,15,67,32,28,98,55,14]
-key = enigma.store(ages_of_customers)
-mean = enigma.stats.mean(key)
+key = client.store(ages_of_customers)
+mean = client.stats.mean(key)
 ```
 
 Computes the mean of a given data set.
 
-`engima.stats.medan(keys)`
+`engima.stats.mean(keys)`
 
 **Returns:** *array* a new array containing the mean value. 
 
@@ -302,13 +318,13 @@ keys | array[string] | keys pointing to data
 
 ```python
 ages_of_customers = [45,43,23,15,67,32,28,98,55,14]
-key = enigma.store(ages_of_customers)
-standard_dev = enigma.stats.std(key)
+key = client.store(ages_of_customers)
+standard_dev = client.stats.std(key)
 ```
 
 Computes the standard deviation over a given data set. 
 
-`enigma.stats.std(keys)`
+`client.stats.std(keys)`
 
 **Returns:** *array* a new array containing the standard deviation.
 
@@ -323,13 +339,13 @@ keys | array[string] | keys pointing to data
 
 ```python
 ages_of_customers = [45,43,23,15,67,32,28,98,55,14]
-key = enigma.store(ages_of_customers)
-variance = enigma.stats.var(key)
+key = client.store(ages_of_customers)
+variance = client.stats.var(key)
 ```
 
 Computes the variance over a given data set. The variance is computed for the flattened array.
 
-`enigma.stats.var(keys)`
+`client.stats.var(keys)`
 
 **Returns:** *array* a new array containing the variance.
 
@@ -345,12 +361,13 @@ keys | array[string] | keys pointing to data
 ```python
 key_a = "10bb65d718d7cc446d2d155ed9ccb2812a82c3c447e8333d5aebfed541874c44"
 key_b = "34eb5849b302e887bc41e516e9bd46c8629af2943c4da4aa94e4d2877fc16b81"
-slope, intercept, r_value, p_value, std_err = enigma.stats.linregress(key_a, key_b)
+key_c = "37eb5849b302e887bc41e516e9bd46c8629af2943c4da4aa943hd2877fc16b81"
+slope, intercept, r_value, p_value, std_err = client.stats.linregress(key_a, key_b, key_c)
 ```
 
 Computes the linear regression for a given data set using ordinary least squares method.
 
-`enigma.stats.linregress(key_a, key_b)`
+`client.stats.linregress(*args)`
 
 **Returns:** 
 * `slope`: *float* slope of the regression line 
@@ -362,8 +379,7 @@ Computes the linear regression for a given data set using ordinary least squares
 ### Linear regressions parameters
 Parameter | Type | Description
 --------- | ----------- | -----------
-key_a | string | key that points to the first set of data
-key_b | string | key that points to the second set of data
+key | string | key that points to the first s
 
 
 ## Multiply matrices
@@ -372,12 +388,12 @@ key_b | string | key that points to the second set of data
 ```python
 key_a = "10bb65d718d7cc446d2d155ed9ccb2812a82c3c447e8333d5aebfed541874c44"
 key_b = "34eb5849b302e887bc41e516e9bd46c8629af2943c4da4aa94e4d2877fc16b81"
-prod = enigma.linalg.dot(key_a, key_b)
+prod = client.linalg.dot(key_a, key_b)
 ```
 
 Computes the dot product of two arrays. For 2-D arrays it is equivalent to matrix multiplication, and for 1-D arrays to inner product of vectors (without complex conjugation). For N dimensions it is a sum product over the last axis of a and the second-to-last of b.
 
-`enigma.linalg.dot()`
+`client.linalg.dot()`
 
 **Returns:** *array* the dot product of a and b, if a and b are both scalars or both 1-D arrays then a scalar is returned; otherwise an array is returned.
 
@@ -388,24 +404,7 @@ key_a | string | key that points to the first array
 key_b | string | key that points to the second array
 
 
-## Inverse of a matrix
 
-
-```python
-key_to_matrix = "10bb65d718d7cc446d2d155ed9ccb2812a82c3c447e8333d5aebfed541874c44"
-inverted_matrix = enigma.linalg.inv(key_to_matrix)
-```
-
-Compute the (multiplicative) inverse of a matrix.
-
-`enigma.linalg.inv(key)`
-
-**Retunrs:** *array* array with (multiplicative) inverse of the matrix.
-
-### Inverse parameters
-Parameter | Type | Description
---------- | ----------- | -----------
-key | string | key that has access to the matrix
 
 
 
