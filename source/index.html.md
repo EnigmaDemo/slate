@@ -23,7 +23,7 @@ This guide will help you intiate an enigma instance, securely store data, set ac
 
 # Deployment
 
-Enigma nodes can be installed on Linux server using a docker image. First, set up an initial seed node. Additional nodes can join given the address of the seed node, propagation to the rest of the network happens automaticlly.
+Enigma nodes can be installed using a docker image. First, set up an initial seed node. Additional nodes can join given the address of the seed node, propagation to the rest of the network happens automaticlly.
 
 ## Start Seed Node
 
@@ -61,11 +61,11 @@ port | integer | port of seed node
 ## Connect to RPC Server
 
 ```python
-from enigma import Client
-client = Client.connect(127.0.0.1, 6655) 
+from enigma import client
+client.connect(127.0.0.1, 6655) 
 ```
 
-`Client.connect(ip, port)`
+`client.connect(ip, port)`
 
 ### Start parameters
 Parameter | Type | Description
@@ -185,7 +185,26 @@ Deletes data from the enigma cloud.
 ### Delete parameters
 Parameter | Type | Description
 --------- | ----------- | -----------
-key | string | key pointing to data 
+key | string | key pointing to data
+
+## Join Data Sets
+
+```python
+credit_data = [[alice, 15][bob, 23][charlie, 34]]
+bank_data = [[alice, 7][bob, 2][charlie, 65]]
+client.join(credit_data, 0, bank_data, 0)
+```
+
+Joins two data sets over a column.
+
+`client.join(X1, columns1, ..., Xn, columnsn)`
+
+**Returns:** *string* key of joined data set
+
+### Delete parameters
+Parameter | Type | Description
+--------- | ----------- | -----------
+key | string | key pointing to joined data 
 
 
 
