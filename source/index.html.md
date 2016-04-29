@@ -201,10 +201,11 @@ Joins two data sets over a column.
 
 **Returns:** *string* key of joined data set
 
-### Delete parameters
+### Set Join parameters
 Parameter | Type | Description
 --------- | ----------- | -----------
-key | string | key pointing to joined data 
+key | string | key pointing to data
+col | int    | column to join data over 
 
 
 
