@@ -190,12 +190,14 @@ key | string | key pointing to data
 ## Join Data Sets
 
 ```python
-credit_data = [[alice, 15][bob, 23][charlie, 34]]
-bank_data = [[alice, 7][bob, 2][charlie, 65]]
-client.join(credit_data, 0, bank_data, 0)
+credit_data = [['alice', 15]['bob', 23]['charlie', 34]]
+bank_data = [['alice', 7]['bob', 2]['charlie', 65]]
+key_credit = client.store(credit_data)
+key_bank = client.store(bank_data)
+joind_set = client.join(key_credit, 0, key_bank, 0)
 ```
 
-Joins two data sets over a column.
+Joins n data sets over a column.
 
 `client.join(X1, columns1, ..., Xn, columnsn)`
 
