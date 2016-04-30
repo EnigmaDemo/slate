@@ -351,12 +351,14 @@
 </tbody></table>
 
 <h2 id="join-data-sets">Join Data Sets</h2>
-<pre class="highlight python"><code><span class="n">credit_data</span> <span class="o">=</span> <span class="p">[[</span><span class="n">alice</span><span class="p">,</span> <span class="mi">15</span><span class="p">][</span><span class="n">bob</span><span class="p">,</span> <span class="mi">23</span><span class="p">][</span><span class="n">charlie</span><span class="p">,</span> <span class="mi">34</span><span class="p">]]</span>
-<span class="n">bank_data</span> <span class="o">=</span> <span class="p">[[</span><span class="n">alice</span><span class="p">,</span> <span class="mi">7</span><span class="p">][</span><span class="n">bob</span><span class="p">,</span> <span class="mi">2</span><span class="p">][</span><span class="n">charlie</span><span class="p">,</span> <span class="mi">65</span><span class="p">]]</span>
-<span class="n">client</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">credit_data</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">bank_data</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+<pre class="highlight python"><code><span class="n">credit_data</span> <span class="o">=</span> <span class="p">[[</span><span class="s">'alice'</span><span class="p">,</span> <span class="mi">15</span><span class="p">][</span><span class="s">'bob'</span><span class="p">,</span> <span class="mi">23</span><span class="p">][</span><span class="s">'charlie'</span><span class="p">,</span> <span class="mi">34</span><span class="p">]]</span>
+<span class="n">bank_data</span> <span class="o">=</span> <span class="p">[[</span><span class="s">'alice'</span><span class="p">,</span> <span class="mi">7</span><span class="p">][</span><span class="s">'bob'</span><span class="p">,</span> <span class="mi">2</span><span class="p">][</span><span class="s">'charlie'</span><span class="p">,</span> <span class="mi">65</span><span class="p">]]</span>
+<span class="n">key_credit</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">store</span><span class="p">(</span><span class="n">credit_data</span><span class="p">)</span>
+<span class="n">key_bank</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">store</span><span class="p">(</span><span class="n">bank_data</span><span class="p">)</span>
+<span class="n">joind_set</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">key_credit</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">key_bank</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
 </code></pre>
 
-<p>Joins two data sets over a column.</p>
+<p>Joins n data sets over a column.</p>
 
 <p><code class="prettyprint">client.join(X1, columns1, ..., Xn, columnsn)</code></p>
 
